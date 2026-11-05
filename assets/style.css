@@ -340,6 +340,14 @@ nav.toc a.sk-nav{background:var(--green-soft);font-weight:700}
 .st-in.gt-free{width:min(260px,100%)}
 .gt-tip{background:var(--green-soft);border-radius:8px;padding:8px 12px;margin-top:8px}
 /* GT-CSS-END */
+/* WW-CSS-START */
+.ww{display:grid;gap:5px;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:10px 14px;margin:0 0 16px;font-size:15px;line-height:1.5}
+.ww p{margin:0}
+.ww-k{display:inline-block;min-width:84px;margin-right:8px;padding:1px 8px;border-radius:999px;font-family:var(--f-mono);font-size:12px;font-weight:600;text-align:center}
+.ww-k.p{background:var(--green-soft);color:var(--green)}
+.ww-k.h{background:var(--orange-soft);color:var(--orange)}
+.ww-k.x{background:var(--blue-soft);color:var(--blue)}
+/* WW-CSS-END */
 
 /* ---- Website (mehrere Seiten) ---- */
 .hero.mini{padding-block:14px 10px}

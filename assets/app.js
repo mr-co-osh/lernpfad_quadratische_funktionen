@@ -166,10 +166,10 @@
     ['mit einer Punktprobe prüfen, ob ein Punkt auf der Parabel liegt.','2025 b'],
     ['Klammern auflösen und die binomischen Formeln anwenden.','2022 b, 2025 c'],
     ['die Scheitelpunktform in die Normalform umformen.','2022 b, 2025 c'],
-    ['den Scheitelpunkt einer Parabel in Normalform berechnen (maximale Höhe).','2023 c, 2024 c'],
+    ['den Scheitelpunkt einer Parabel in Normalform berechnen (maximale Höhe) und die Scheitelpunktform angeben.','2023 c, 2024 c'],
     ['Nullstellen mit der pq-Formel, durch Ausklammern oder Wurzelziehen berechnen.','2023 b, 2026 d'],
     ['berechnen, an welcher Stelle eine Funktion einen bestimmten Wert hat (f(x) = k).','2022 c, 2023 d'],
-    ['Schnittpunkte von zwei Parabeln oder von Parabel und Gerade berechnen.','2024 d, 2026 e'],
+    ['Schnittpunkte von zwei Parabeln oder von Parabel und Gerade berechnen – mit x- und y-Wert.','2024 d, 2026 e'],
     ['in einem Sachtext erkennen, welche Rechnung gefragt ist, und mit Antwortsatz antworten.','alle'],
     ['Abstände im Sachkontext richtig berücksichtigen (Säule, Netz, Breite).','2023, 2026'],
     ['zu einer Beschreibung passende Gleichungen auswählen und eine Flugbahn skizzieren.','2024 e, f']
