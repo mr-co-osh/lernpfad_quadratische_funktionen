@@ -125,8 +125,8 @@ if(document.getElementById('stArea')){
           rows.push(row('p', '=', S(p,'n','Lies p ab: die Zahl vor x, mit Vorzeichen.','Bei x² ' + (p < 0 ? '−' : '+') + ' ' + Math.abs(p) + 'x ist p = ' + (p < 0 ? '−' : '') + '…')));
           rows.push(row('q', '=', S(q,'n','Lies q ab: die Zahl ohne x, mit Vorzeichen.','Das Vorzeichen gehört dazu.')));
         }
-        rows.push(row('x', '=', [S(hh,'n','Berechne −' + FR('p','2') + ' = −(' + f(p) + ') : 2.','Das Vorzeichen von p dreht sich um.'), ' ± √(',
-                                 S(D,'n','Berechne, was unter der Wurzel steht: (' + FR('p','2') + ')² − q = ' + par(p/2) + '² − ' + par(q) + '.','Erst ' + par(p/2) + '² = ' + f(p*p/4) + ', dann − ' + par(q) + '.'), ')']));
+        rows.push(row('x', '=', [S(hh,'n','Berechne −' + FR('p','2') + ' = −(' + f(p) + ') : 2.','Das Vorzeichen von p dreht sich um.'), ' ± <span class="rt">√</span><span class="rad">',
+                                 S(D,'n','Berechne, was unter der Wurzel steht: (' + FR('p','2') + ')² − q = ' + par(p/2) + '² − ' + par(q) + '.','Erst ' + par(p/2) + '² = ' + f(p*p/4) + ', dann − ' + par(q) + '.'), '</span>']));
         rows.push(row('', '=', [f(hh) + ' ± ', S(w,'n','Ziehe die Wurzel aus ' + f(D) + '.','Welche Zahl mal sich selbst ergibt ' + f(D) + '?')]));
         if(D > 0){
           rows.push(row('x₁', '=', S(x1,'n','Rechne x₁ = ' + f(hh) + ' − ' + f(w) + '.','Minus-Rechnung zuerst.')));
