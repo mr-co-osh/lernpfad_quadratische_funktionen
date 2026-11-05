@@ -54,6 +54,7 @@
         <button type="button" data-t="pq" aria-pressed="false">Nullstellen mit pq (B6)</button>
         <button type="button" data-t="fw" aria-pressed="false">Funktionswert (B5)</button>
         <button type="button" data-t="um" aria-pressed="false">In Normalform umformen (B5)</button>
+        <button type="button" data-t="nfspf" aria-pressed="false">Normalform → Scheitelpunktform (B5)</button>
       </div>
       <div class="q" id="tq"></div>
       <form class="answers" id="tform">
@@ -69,8 +70,8 @@
 <!-- GT-START -->
     <div class="block trainer gt" id="gtBlock" style="margin-top:18px">
       <h3>Gleichungs-Trainer</h3>
-      <p class="gt-intro">Gleichungen der Form 0 = … lösen – so wie bei Nullstellen. Erst Schritt für Schritt, dann ohne Schritte.</p>
-      <div class="ttabs" role="group" aria-label="Gleichungsart"><button type="button" id="gt-lin" data-g="lin" aria-pressed="true">Lineare Gleichungen (B1)</button><button type="button" id="gt-quad" data-g="quad" aria-pressed="false">Quadratische Gleichungen ohne pq (B6)</button></div>
+      <p class="gt-intro">Gleichungen lösen wie bei Nullstellen und Schnittpunkten. Erst Schritt für Schritt, dann ohne Schritte.</p>
+      <div class="ttabs" role="group" aria-label="Gleichungsart"><button type="button" id="gt-lin" data-g="lin" aria-pressed="true">Lineare Gleichungen (B1)</button><button type="button" id="gt-quad" data-g="quad" aria-pressed="false">Quadratische Gleichungen ohne pq (B6)</button><button type="button" id="gt-schnitt" data-g="schnitt" aria-pressed="false">Schnittpunkt zweier Bahnen (B7)</button></div>
       <div class="gt-mode" role="group" aria-label="Arbeitsweise"><span>Arbeitsweise:</span><button type="button" class="xbtn gt-m" data-m="steps" aria-pressed="true">Mit Schritten</button><button type="button" class="xbtn gt-m" data-m="free" aria-pressed="false">Ohne Schritte</button></div>
       <div class="st-task" id="gtTask"></div>
       <div class="st-area" id="gtArea" aria-live="polite"></div>

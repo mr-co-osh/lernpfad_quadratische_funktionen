@@ -125,6 +125,10 @@
     } else if(type==='fw'){
       const a = pick([-0.5,-0.2,-0.1,0.25,0.5,1,2]), b = pick([-2,-1,0.5,1,2,3]), c = rnd(-3,5), x = pick([-3,-2,-1.5,1,2,2.5,3,4]);
       q = nfText(a,b,c) + '.   Berechne f(' + fmt(x) + ').'; sol = [a*x*x+b*x+c]; labels=['f(' + fmt(x) + ') =']; way = fmt(a) + '·(' + fmt(x) + ')² + ' + fmt(b) + '·(' + fmt(x) + ') + ' + fmt(c) + ' = ' + fmt(a*x*x+b*x+c);
+    } else if(type==='nfspf'){
+      const a = pick([-2,-1,-0.5,0.5,1,2,3]), d = rnd(-5,5) || 2, e = rnd(-6,6), b = -2*a*d, c = a*d*d+e;
+      q = 'Gib in Scheitelpunktform f(x) = a(x − xₛ)² + yₛ an:  ' + nfText(a,b,c); sol = [a, d, e]; labels=['a =','xₛ =','yₛ ='];
+      way = '① xₛ = −b : (2a) = ' + fmt(-b) + ' : ' + fmt(2*a) + ' = ' + fmt(d) + '   ② yₛ = f(' + fmt(d) + ') = ' + fmt(e) + '   ③ a bleibt ' + fmt(a) + '  →  ' + spfText(a,d,e) + '   Probe: ausmultiplizieren.';
     } else {
       const a = pick([-2,-1,1,2,0.5]), d = rnd(-4,4) || 1, e = rnd(-5,5);
       q = 'Forme in ax² + bx + c um:  ' + spfText(a,d,e); sol = [a, -2*a*d, a*d*d+e]; labels=['a =','b =','c =']; way = 'Binomische Formel anwenden: ' + nfText(1,-2*d,d*d).replace('f(x) = ','') + ', dann mit ' + fmt(a) + ' multiplizieren und ' + fmt(e) + ' addieren → ' + nfText(a,-2*a*d,a*d*d+e);
@@ -466,8 +470,8 @@
     const lin = (a,b) => lead(a,'x') + (b ? sgn(b) : '');
     const poly = (a,b,c) => lead(a,'x²') + (b ? sgn(b,'x') : '') + (c ? sgn(c) : '');
     const op = v => (v > 0 ? '− ' : '+ ') + f(Math.abs(v));
-    const SH = {s:v=>sgn(v), n:v=>f(v)}, PRE = {s:' ', n:''};
-    const S = (a,fm,q,h) => ({slot:true, a, f:fm, q, h});
+    const SH = {s:v=>sgn(v), n:v=>f(v), c2:v=>lead(v,'x²'), sx:v=>sgn(v,'x')}, PRE = {s:' ', n:'', c2:'', sx:' '}, POST = {s:'', n:'', c2:'x²', sx:'x'};
+    const S = (a,fm,q,h,tol) => ({slot:true, a, f:fm, q, h, tol:tol || 1e-6});
     const row = (l,o,r,n) => ({l:[].concat(l), o:o || '=', r:[].concat(r), n:n || ''});
 
     const GEN = {
@@ -483,6 +487,21 @@
           row(S(-b,'n','Rechne auf beiden Seiten ' + op(b) + '. Was steht jetzt links?', '0 ' + op(b) + ' = ?  Die Zahl wechselt beim Rüberbringen das Vorzeichen.'), '=', lead(a,'x'), '| : ' + par(a)),
           row(S(x,'n','Teile beide Seiten durch ' + par(a) + '. Welche Zahl ist x?', f(-b) + ' : ' + par(a) + ' = ?  Minus durch Minus ergibt Plus.'), '=', 'x')],
           fin:'x = ' + f(x)};
+      },
+      schnitt(){
+        const A = pick([-0.1,-0.2,-0.25,-0.4,-0.5]), x2 = pick([2,3,4,5,6,8]), B = Math.round(-A * x2 * 1000) / 1000;
+        const a2 = pick([-0.05,-0.1,-0.2,-0.3]), a1 = Math.round((a2 + A) * 1000) / 1000;
+        const b2 = pick([0.5,0.8,1,1.2,1.5]), b1 = Math.round((b2 + B) * 1000) / 1000, c = pick([1.5,1.8,2,2.2]);
+        const y = Math.round((a1*x2*x2 + b1*x2 + c) * 100) / 100;
+        return {t:'f(x) = ' + poly(a1,b1,c) + ' und g(x) = ' + poly(a2,b2,c) + '. Wo sind beide gleich hoch?', sol:[x2, y], ordered:true,
+          freeQ:'<b>Gib x und die Höhe des zweiten Schnittpunkts ein</b> (nicht x = 0), getrennt durch ; – z. B. 4; 3,1.', rows:[
+          row(poly(a1,b1,c), '=', poly(a2,b2,c), 'gleichsetzen'),
+          row([S(A,'c2','Bringe alles auf die linke Seite. Welche Zahl steht jetzt vor x²?','Rechne ' + f(a1) + ' − ' + par(a2) + '.'),
+               S(B,'sx','Welche Zahl steht jetzt vor x?','Rechne ' + f(b1) + ' − ' + par(b2) + '. Die Zahl ohne x fällt weg: ' + f(c) + ' − ' + f(c) + ' = 0.')], '=', '0', 'alles auf eine Seite'),
+          row('x(' + lead(A,'x') + sgn(B) + ')', '=', '0', 'x ausklammern'),
+          row('x', '=', ['0  oder  x = ', S(x2,'n','x = 0 ist der Start. Löse ' + lin(A,B) + ' = 0.','Rechne ' + op(B) + ', dann : ' + par(A) + '.')]),
+          row('f(' + f(x2) + ')', '≈', S(y,'n','Berechne die Höhe: Setze x = ' + f(x2) + ' in f ein (auf 2 Stellen runden).','f(' + f(x2) + ') = ' + f(a1) + ' · ' + f(x2) + '² + ' + f(b1) + ' · ' + f(x2) + ' + ' + f(c), 0.0051), 'y-Wert nicht vergessen!')],
+          fin:'Schnittpunkt (' + f(x2) + ' | ' + f(y) + ') – bei x = 0 starten beide'};
       },
       quad(){
         const k = Math.random();
@@ -524,8 +543,8 @@
       if(!p.slot) return p;
       const i = slots.indexOf(p);
       if(full || i < idx) return '<span class="st-done">' + SH[p.f](p.a) + '</span>';
-      if(i === idx) return PRE[p.f] + '<input class="st-in" id="gtIn" inputmode="decimal" autocomplete="off" aria-label="Antwort">';
-      return PRE[p.f] + '<span class="st-slot">?</span>';
+      if(i === idx) return PRE[p.f] + '<input class="st-in" id="gtIn" inputmode="decimal" autocomplete="off" aria-label="Antwort">' + POST[p.f];
+      return PRE[p.f] + '<span class="st-slot">?</span>' + POST[p.f];
     }
     function rowsHtml(full){
       const cur = !full && idx < slots.length ? slots[idx] : null;
@@ -540,7 +559,7 @@
     function render(){
       if(mode === 'free'){
         area.innerHTML = done ? rowsHtml(true) : '';
-        q.innerHTML = done ? '' : '<b>Gib alle Lösungen ein.</b> Mehrere Lösungen mit ; trennen (z. B. 4; −4). Keine Lösung: „keine“.';
+        q.innerHTML = done ? '' : (task.freeQ || '<b>Gib alle Lösungen ein.</b> Mehrere Lösungen mit ; trennen (z. B. 4; −4). Keine Lösung: „keine“.');
         free.hidden = done; checkBtn.hidden = done; hintBtn.hidden = done; show.hidden = done || tries < 1;
         if(!done) free.focus({preventScroll:true});
         return;
@@ -557,7 +576,7 @@
       task = GEN[type]();
       slots = []; task.rows.forEach(r => r.l.concat(r.r).forEach(p => { if(p.slot) slots.push(p); }));
       idx = 0; tries = 0; helped = false; done = false; fb.hidden = true; free.value = '';
-      document.getElementById('gtTask').textContent = 'Löse: ' + task.t;
+      document.getElementById('gtTask').textContent = (task.ordered ? '' : 'Löse: ') + task.t;
       render();
     }
     function finish(){
@@ -587,6 +606,12 @@
           if(/^±|^\+\/?-/.test(p)){ const v = num(p.replace(/^±|^\+\/?-/, '')); vals.push(v, -v); } else vals.push(num(p)); });
         if(vals.some(isNaN)){ fb.hidden = false; fb.className = 'fb'; fb.textContent = 'Das kann ich nicht lesen. Beispiel: 4; −4'; return; }
       }
+      if(task.ordered){
+        const okO = vals.length === task.sol.length && vals.every((v,i) => Math.abs(v - task.sol[i]) <= (i ? 0.0051 : 1e-6));
+        if(okO){ render(); finish(); render(); return; }
+        tries++; fb.hidden = false; fb.className = 'fb'; show.hidden = false;
+        fb.innerHTML = '✗ Noch nicht. ' + (vals.length !== 2 ? 'Gib zwei Zahlen ein: x; Höhe.' : 'Prüfe x und die Höhe. Hast du f(x) mit deinem x berechnet?'); return;
+      }
       const want = task.sol.slice().sort((a,b) => a-b), got = Array.from(new Set(vals.map(v => Math.round(v*10000)/10000))).sort((a,b) => a-b);
       if(want.length === got.length && want.every((v,i) => Math.abs(v - got[i]) < 1e-6)){ render(); finish(); render(); return; }
       tries++;
@@ -601,7 +626,7 @@
       const raw = inp.value.trim(), v = num(raw);
       if(raw === '' || isNaN(v)){ fb.hidden = false; fb.className = 'fb'; fb.textContent = 'Bitte eine Zahl eingeben.'; return; }
       const s = slots[idx];
-      if(Math.abs(v - s.a) < 1e-6) return next();
+      if(Math.abs(v - s.a) <= s.tol) return next();
       tries++;
       fb.hidden = false; fb.className = 'fb'; fb.innerHTML = '✗ Noch nicht. <b>Tipp:</b> ' + s.h;
       show.hidden = tries < 2; inp.select();
@@ -622,9 +647,9 @@
     function setMode(m){ mode = m; streak = 0; document.querySelectorAll('#gtBlock .gt-m').forEach(b => b.setAttribute('aria-pressed', b.dataset.m === m ? 'true' : 'false')); fresh(); }
     document.querySelectorAll('#gtBlock [data-g]').forEach(b => b.addEventListener('click', () => setType(b.dataset.g)));
     document.querySelectorAll('#gtBlock .gt-m').forEach(b => b.addEventListener('click', () => setMode(b.dataset.m)));
-    function fromHash(){ const m = location.hash.match(/^#gt-(lin|quad)$/); if(m) setType(m[1]); }
+    function fromHash(){ const m = location.hash.match(/^#gt-(lin|quad|schnitt)$/); if(m) setType(m[1]); }
     window.addEventListener('hashchange', fromHash);
-    document.addEventListener('click', e => { const a = e.target.closest('a[href$="#gt-lin"], a[href$="#gt-quad"]'); if(a) setTimeout(fromHash, 0); });
+    document.addEventListener('click', e => { const a = e.target.closest('a[href$="#gt-lin"], a[href$="#gt-quad"], a[href$="#gt-schnitt"]'); if(a) setTimeout(fromHash, 0); });
     fresh(); fromHash();
     window.gtTrainer = {GEN, setType, setMode};
   })();
