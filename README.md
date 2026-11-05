@@ -14,7 +14,8 @@ Lernseite zur Einheit „Quadratische Funktionen“ (Mathematik 10, E-Kurs, Ziel
 | `ka.html` | Überblick Klassenarbeit mit Lösungen zur Checkliste |
 | `fuev.html` | Musterlösungen zu den FÜV |
 | `basis.html` | Basis-Blöcke 1–6 mit Lösungen und Schritt-Trainer |
-| `labor.html`, `trainer.html`, `ich-kann.html`, `glossar.html`, `links.html` | Werkzeuge |
+| `trainer.html` | Trainer mit neuen Aufgaben und Gleichungs-Trainer (mit / ohne Schritte) |
+| `labor.html`, `ich-kann.html`, `glossar.html`, `links.html` | Werkzeuge |
 | `entdecken/b1.html` … `b7.html` | Entdecken-Seiten (Ziel der QR-Codes auf den Aufgabenblättern) |
 | `assets/style.css` | Design für alle Seiten (Farben, Schrift, Kästen) |
 | `assets/app.js` | Zeichnen, Labor, Trainer, Ich-kann-Liste, Glossar |

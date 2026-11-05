@@ -453,3 +453,179 @@
   new MutationObserver(drawAll).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(drawAll);
 })();
+// GT-JS-START
+  // ---------- Gleichungs-Trainer (mit / ohne Schritte) ----------
+  if(document.getElementById('gtArea')) (function(){
+    const R = (a,b) => a + Math.floor(Math.random()*(b-a+1));
+    const NZ = (a,b) => { let v; do { v = R(a,b); } while(v === 0); return v; };
+    const pick = a => a[Math.floor(Math.random()*a.length)];
+    const f = v => { v = Math.round(v*10000)/10000; return (v < 0 ? '−' : '') + String(Math.abs(v)).replace('.', ','); };
+    const par = v => v < 0 ? '(' + f(v) + ')' : f(v);
+    const sgn = (v,t) => (v < 0 ? ' − ' : ' + ') + (t && Math.abs(v) === 1 ? '' : f(Math.abs(v))) + (t || '');
+    const lead = (v,t) => (t && v === 1 ? '' : t && v === -1 ? '−' : f(v)) + (t || '');
+    const lin = (a,b) => lead(a,'x') + (b ? sgn(b) : '');
+    const poly = (a,b,c) => lead(a,'x²') + (b ? sgn(b,'x') : '') + (c ? sgn(c) : '');
+    const op = v => (v > 0 ? '− ' : '+ ') + f(Math.abs(v));
+    const SH = {s:v=>sgn(v), n:v=>f(v)}, PRE = {s:' ', n:''};
+    const S = (a,fm,q,h) => ({slot:true, a, f:fm, q, h});
+    const row = (l,o,r,n) => ({l:[].concat(l), o:o || '=', r:[].concat(r), n:n || ''});
+
+    const GEN = {
+      lin(){
+        const a = pick([2,3,4,5,6,8,-2,-3,-4,-5,0.5,-0.5]);
+        let x;
+        if(Math.abs(a) === 0.5) x = 2 * NZ(-6,6);
+        else if(Math.abs(a) % 2 === 0 && Math.random() < 0.3) x = NZ(-6,6) + 0.5;
+        else x = NZ(-9,9);
+        const b = -a * x;
+        return {t:'0 = ' + lin(a,b), sol:[x], rows:[
+          row('0', '=', lin(a,b), '| ' + op(b)),
+          row(S(-b,'n','Rechne auf beiden Seiten ' + op(b) + '. Was steht jetzt links?', '0 ' + op(b) + ' = ?  Die Zahl wechselt beim Rüberbringen das Vorzeichen.'), '=', lead(a,'x'), '| : ' + par(a)),
+          row(S(x,'n','Teile beide Seiten durch ' + par(a) + '. Welche Zahl ist x?', f(-b) + ' : ' + par(a) + ' = ?  Minus durch Minus ergibt Plus.'), '=', 'x')],
+          fin:'x = ' + f(x)};
+      },
+      quad(){
+        const k = Math.random();
+        if(k < 0.2){                                     // Falle: keine Lösung
+          const a = pick([1,2,3,0.5,-1,-2]), q = pick([4,9,16,25,1,36]), c = a * q;   // gleiches Vorzeichen
+          const rows = [row('0', '=', poly(a,0,c), '| ' + op(c))];
+          if(a !== 1){
+            rows.push(row(S(-c,'n','Rechne auf beiden Seiten ' + op(c) + '. Was steht links?','0 ' + op(c) + ' = ?'), '=', lead(a,'x²'), '| : ' + par(a)));
+            rows.push(row(S(-q,'n','Teile durch ' + par(a) + '. Was steht links?', f(-c) + ' : ' + par(a) + ' = ?'), '=', 'x²', 'Wurzel ziehen?'));
+          } else rows.push(row(S(-q,'n','Rechne auf beiden Seiten ' + op(c) + '. Was steht links?','0 ' + op(c) + ' = ?'), '=', 'x²', 'Wurzel ziehen?'));
+          rows.push(row('Anzahl der Lösungen', '=', S(0,'n','x² ist negativ. Wie viele Lösungen gibt es? (0, 1 oder 2)','Keine Zahl mal sich selbst ergibt eine negative Zahl.')));
+          return {t:'0 = ' + poly(a,0,c), sol:[], rows, fin:'keine Lösung'};
+        }
+        if(k < 0.45){                                    // x ausklammern
+          const a = pick([1,1,2,3,-1]), r = NZ(-9,9), b = -a * r;
+          return {t:'0 = ' + poly(a,b,0), sol:[0, r], rows:[
+            row('0', '=', poly(a,b,0), 'x ausklammern'),
+            row('0', '=', ['x(' + lead(a,'x'), S(b,'s','Klammere x aus. Welche Zahl steht in der Klammer hinter ' + lead(a,'x') + '?','Teile jedes Glied durch x: ' + lead(b,'x') + ' : x = ?'), ')'], 'ein Faktor muss 0 sein'),
+            row('x', '=', ['0  oder  x = ', S(r,'n','Erste Lösung: x = 0. Löse für die zweite ' + lin(a,b) + ' = 0.','Rechne ' + op(b) + ' und dann : ' + par(a) + '.')])],
+            fin:'x = 0  oder  x = ' + f(r)};
+        }
+        const a = pick([1,2,3,0.5,-1,-2,-0.5]), r = pick([1,2,3,4,5,6,7,8,9,10,1.5,2.5]), q = r * r, c = -a * q;
+        const rows = [row('0', '=', poly(a,0,c), '| ' + op(c))];
+        if(a !== 1){
+          rows.push(row(S(-c,'n','Rechne auf beiden Seiten ' + op(c) + '. Was steht links?','0 ' + op(c) + ' = ?'), '=', lead(a,'x²'), '| : ' + par(a)));
+          rows.push(row(S(q,'n','Teile beide Seiten durch ' + par(a) + '. Was steht links?', f(-c) + ' : ' + par(a) + ' = ?'), '=', 'x²', '| √'));
+        } else rows.push(row(S(q,'n','Rechne auf beiden Seiten ' + op(c) + '. Was steht links?','0 ' + op(c) + ' = ?'), '=', 'x²', '| √'));
+        rows.push(row('x', '=', [S(r,'n','Ziehe die Wurzel. Wie heißt die positive Lösung?','Welche Zahl mal sich selbst ergibt ' + f(q) + '?'), '  oder  x = ',
+                                 S(-r,'n','Es gibt noch eine zweite Lösung. Welche?','Auch (−' + f(r) + ')² = ' + f(q) + '.')]));
+        return {t:'0 = ' + poly(a,0,c), sol:[r, -r], rows, fin:'x = ' + f(r) + '  oder  x = ' + f(-r)};
+      }
+    };
+
+    let type = 'lin', mode = 'steps', task = null, slots = [], idx = 0, tries = 0, helped = false, ok = 0, all = 0, streak = 0, done = false;
+    const area = document.getElementById('gtArea'), q = document.getElementById('gtQ'), fb = document.getElementById('gtFb');
+    const show = document.getElementById('gtShow'), form = document.getElementById('gtForm'), free = document.getElementById('gtFree');
+    const hintBtn = document.getElementById('gtHint'), checkBtn = document.getElementById('gtCheck');
+    function part(p, full){
+      if(!p.slot) return p;
+      const i = slots.indexOf(p);
+      if(full || i < idx) return '<span class="st-done">' + SH[p.f](p.a) + '</span>';
+      if(i === idx) return PRE[p.f] + '<input class="st-in" id="gtIn" inputmode="decimal" autocomplete="off" aria-label="Antwort">';
+      return PRE[p.f] + '<span class="st-slot">?</span>';
+    }
+    function rowsHtml(full){
+      const cur = !full && idx < slots.length ? slots[idx] : null;
+      let last = task.rows.length - 1;
+      if(cur) last = task.rows.findIndex(r => r.l.includes(cur) || r.r.includes(cur));
+      let h = '<div class="eqg">';
+      task.rows.slice(0, last + 1).forEach(r => {
+        h += '<span class="eqlab"></span><span class="eql">' + r.l.map(p => part(p, full)).join('') + '</span><span class="eqo">' + r.o + '</span><span class="eqr">' + r.r.map(p => part(p, full)).join('') + '</span><span class="eqn">' + r.n + '</span>';
+      });
+      return h + '</div>' + (cur ? '' : '<p class="st-fin">Ergebnis: ' + task.fin + '</p>');
+    }
+    function render(){
+      if(mode === 'free'){
+        area.innerHTML = done ? rowsHtml(true) : '';
+        q.innerHTML = done ? '' : '<b>Gib alle Lösungen ein.</b> Mehrere Lösungen mit ; trennen (z. B. 4; −4). Keine Lösung: „keine“.';
+        free.hidden = done; checkBtn.hidden = done; hintBtn.hidden = done; show.hidden = done || tries < 1;
+        if(!done) free.focus({preventScroll:true});
+        return;
+      }
+      free.hidden = true;
+      const cur = idx < slots.length ? slots[idx] : null;
+      area.innerHTML = rowsHtml(false);
+      checkBtn.hidden = hintBtn.hidden = !cur;
+      show.hidden = !cur || tries < 2;
+      q.innerHTML = cur ? '<b>Schritt ' + (idx + 1) + ' von ' + slots.length + ':</b> ' + cur.q : '';
+      const inp = document.getElementById('gtIn'); if(inp) inp.focus({preventScroll:true});
+    }
+    function fresh(){
+      task = GEN[type]();
+      slots = []; task.rows.forEach(r => r.l.concat(r.r).forEach(p => { if(p.slot) slots.push(p); }));
+      idx = 0; tries = 0; helped = false; done = false; fb.hidden = true; free.value = '';
+      document.getElementById('gtTask').textContent = 'Löse: ' + task.t;
+      render();
+    }
+    function finish(){
+      done = true; all++; if(!helped){ ok++; streak++; } else streak = 0;
+      document.getElementById('gtScore').textContent = 'Ohne Hilfe gelöst: ' + ok + ' von ' + all;
+      fb.hidden = false; fb.className = 'fb ok';
+      let t = helped ? 'Fertig! Rechne die Aufgabe jetzt noch einmal allein im Heft.' : 'Super, alles richtig! Klick auf „Neue Aufgabe“.';
+      if(mode === 'steps' && streak >= 3) t += '<div class="gt-tip"><b>Drei richtig ohne Hilfe!</b> Probier es jetzt ohne Schritte. <button type="button" class="xbtn" id="gtGoFree">Ohne Schritte üben →</button></div>';
+      fb.innerHTML = t;
+      const g = document.getElementById('gtGoFree'); if(g) g.addEventListener('click', () => setMode('free'));
+    }
+    function next(){
+      idx++; tries = 0;
+      if(idx >= slots.length){ render(); finish(); return; }
+      fb.hidden = false; fb.className = 'fb ok'; fb.textContent = '✓ Richtig! Weiter mit dem nächsten Schritt.';
+      render();
+    }
+    const num = t => parseFloat(t.replace(/\s/g,'').replace(/[−–]/g,'-').replace(',', '.'));
+    function checkFree(){
+      const raw = free.value.trim();
+      if(!raw){ fb.hidden = false; fb.className = 'fb'; fb.textContent = 'Gib deine Lösung ein.'; return; }
+      let vals;
+      if(/kein/i.test(raw)) vals = [];
+      else {
+        vals = [];
+        raw.split(/;|oder|und|\|/i).forEach(p => { p = p.trim().replace(/^x\s*[₁₂12]?\s*=\s*/i, ''); if(!p) return;
+          if(/^±|^\+\/?-/.test(p)){ const v = num(p.replace(/^±|^\+\/?-/, '')); vals.push(v, -v); } else vals.push(num(p)); });
+        if(vals.some(isNaN)){ fb.hidden = false; fb.className = 'fb'; fb.textContent = 'Das kann ich nicht lesen. Beispiel: 4; −4'; return; }
+      }
+      const want = task.sol.slice().sort((a,b) => a-b), got = Array.from(new Set(vals.map(v => Math.round(v*10000)/10000))).sort((a,b) => a-b);
+      if(want.length === got.length && want.every((v,i) => Math.abs(v - got[i]) < 1e-6)){ render(); finish(); render(); return; }
+      tries++;
+      fb.hidden = false; fb.className = 'fb';
+      fb.innerHTML = '✗ Noch nicht. ' + (got.length < want.length ? 'Es gibt ' + (want.length === 2 ? 'zwei Lösungen.' : 'eine Lösung.') : got.length > want.length ? (want.length ? 'Es gibt weniger Lösungen.' : 'Prüfe, ob es überhaupt eine Lösung gibt.') : 'Prüfe deine Rechnung.') + ' Tipp: Schalte auf „Mit Schritten“, wenn du nicht weiterkommst.';
+      show.hidden = false;
+    }
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      if(mode === 'free') return checkFree();
+      const inp = document.getElementById('gtIn'); if(!inp) return;
+      const raw = inp.value.trim(), v = num(raw);
+      if(raw === '' || isNaN(v)){ fb.hidden = false; fb.className = 'fb'; fb.textContent = 'Bitte eine Zahl eingeben.'; return; }
+      const s = slots[idx];
+      if(Math.abs(v - s.a) < 1e-6) return next();
+      tries++;
+      fb.hidden = false; fb.className = 'fb'; fb.innerHTML = '✗ Noch nicht. <b>Tipp:</b> ' + s.h;
+      show.hidden = tries < 2; inp.select();
+    });
+    area.addEventListener('keydown', e => { if(e.key === 'Enter' && e.target.id === 'gtIn'){ e.preventDefault(); form.requestSubmit(); } });
+    hintBtn.addEventListener('click', () => {
+      helped = true; fb.hidden = false; fb.className = 'fb';
+      if(mode === 'free'){ const r0 = task.rows[0]; fb.innerHTML = '<b>Tipp:</b> Beginne mit: ' + r0.n + (type === 'quad' && task.sol.length === 2 && task.sol[0] !== 0 ? '. Denk an die zweite Lösung!' : '.'); return; }
+      const s = slots[idx]; if(s) fb.innerHTML = '<b>Tipp:</b> ' + s.h;
+    });
+    show.addEventListener('click', () => {
+      helped = true;
+      if(mode === 'free'){ done = true; streak = 0; all++; document.getElementById('gtScore').textContent = 'Ohne Hilfe gelöst: ' + ok + ' von ' + all; render(); fb.hidden = false; fb.className = 'fb'; fb.textContent = 'So geht es. Probier die nächste Aufgabe!'; return; }
+      const s = slots[idx]; next(); fb.className = 'fb'; fb.innerHTML = 'Lösung: <b>' + SH[s.f](s.a).trim() + '</b>. Weiter geht es mit dem nächsten Schritt.';
+    });
+    document.getElementById('gtNew').addEventListener('click', fresh);
+    function setType(t){ type = t; document.querySelectorAll('#gtBlock [data-g]').forEach(b => b.setAttribute('aria-pressed', b.dataset.g === t ? 'true' : 'false')); fresh(); }
+    function setMode(m){ mode = m; streak = 0; document.querySelectorAll('#gtBlock .gt-m').forEach(b => b.setAttribute('aria-pressed', b.dataset.m === m ? 'true' : 'false')); fresh(); }
+    document.querySelectorAll('#gtBlock [data-g]').forEach(b => b.addEventListener('click', () => setType(b.dataset.g)));
+    document.querySelectorAll('#gtBlock .gt-m').forEach(b => b.addEventListener('click', () => setMode(b.dataset.m)));
+    function fromHash(){ const m = location.hash.match(/^#gt-(lin|quad)$/); if(m) setType(m[1]); }
+    window.addEventListener('hashchange', fromHash);
+    document.addEventListener('click', e => { const a = e.target.closest('a[href$="#gt-lin"], a[href$="#gt-quad"]'); if(a) setTimeout(fromHash, 0); });
+    fresh(); fromHash();
+    window.gtTrainer = {GEN, setType, setMode};
+  })();
+// GT-JS-END

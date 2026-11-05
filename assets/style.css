@@ -332,6 +332,14 @@ nav.toc a.sk-nav{background:var(--green-soft);font-weight:700}
 .xp-task-h{font-family:var(--f-mono);font-size:13px;color:var(--green);letter-spacing:.03em}
 .xp-task ul{margin:4px 0 0;padding-left:20px;font-family:var(--f-mono);font-size:15px}
 /* XP-CSS-END */
+/* GT-CSS-START */
+.gt-intro{margin:0 0 4px;color:var(--muted)}
+.gt-mode{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0 4px}
+.gt-mode span{font-weight:700}
+.gt-mode .xbtn[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:var(--paper);font-weight:700}
+.st-in.gt-free{width:min(260px,100%)}
+.gt-tip{background:var(--green-soft);border-radius:8px;padding:8px 12px;margin-top:8px}
+/* GT-CSS-END */
 
 /* ---- Website (mehrere Seiten) ---- */
 .hero.mini{padding-block:14px 10px}

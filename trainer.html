@@ -44,7 +44,7 @@
   <main>
   <section class="unit" id="trainer">
     <div class="unit-head"><span class="tag">Üben</span><h2>Trainer mit neuen Aufgaben</h2></div>
-    <p class="goal">Wähle eine Aufgabenart. Mit „Neue Aufgabe“ bekommst du immer neue Zahlen. Dezimalzahlen mit Komma oder Punkt eingeben.</p>
+    <p class="goal">Wähle eine Aufgabenart. Mit „Neue Aufgabe“ bekommst du immer neue Zahlen. Weiter unten: der Gleichungs-Trainer. Dezimalzahlen mit Komma oder Punkt eingeben.</p>
     <div class="block trainer">
       <div class="ttabs" role="group" aria-label="Aufgabenart">
         <button type="button" data-t="lin2p" aria-pressed="false">Gerade aus 2 Punkten (B1)</button>
@@ -66,6 +66,26 @@
       <div class="fb" id="tfb" hidden></div>
       <div class="score" id="tscore">Richtig: 0 von 0</div>
     </div>
+<!-- GT-START -->
+    <div class="block trainer gt" id="gtBlock" style="margin-top:18px">
+      <h3>Gleichungs-Trainer</h3>
+      <p class="gt-intro">Gleichungen der Form 0 = … lösen – so wie bei Nullstellen. Erst Schritt für Schritt, dann ohne Schritte.</p>
+      <div class="ttabs" role="group" aria-label="Gleichungsart"><button type="button" id="gt-lin" data-g="lin" aria-pressed="true">Lineare Gleichungen (B1)</button><button type="button" id="gt-quad" data-g="quad" aria-pressed="false">Quadratische Gleichungen ohne pq (B6)</button></div>
+      <div class="gt-mode" role="group" aria-label="Arbeitsweise"><span>Arbeitsweise:</span><button type="button" class="xbtn gt-m" data-m="steps" aria-pressed="true">Mit Schritten</button><button type="button" class="xbtn gt-m" data-m="free" aria-pressed="false">Ohne Schritte</button></div>
+      <div class="st-task" id="gtTask"></div>
+      <div class="st-area" id="gtArea" aria-live="polite"></div>
+      <form class="answers st-form" id="gtForm">
+        <p class="st-q" id="gtQ"></p>
+        <input class="st-in gt-free" id="gtFree" autocomplete="off" inputmode="text" aria-label="Lösungen" hidden>
+        <button class="btn primary" type="submit" id="gtCheck">Prüfen</button>
+        <button class="btn" type="button" id="gtHint">Tipp</button>
+        <button class="btn" type="button" id="gtShow" hidden>Lösung zeigen</button>
+        <button class="btn" type="button" id="gtNew">Neue Aufgabe</button>
+      </form>
+      <div class="fb" id="gtFb" hidden></div>
+      <div class="score" id="gtScore">Ohne Hilfe gelöst: 0 von 0</div>
+    </div>
+<!-- GT-END -->
   </section>
   </main>
 </div>
