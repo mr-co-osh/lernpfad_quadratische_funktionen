@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parabel-Labor – Lernpfad quadratische Funktionen</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M4 4 Q16 52 28 4' fill='none' stroke='%23144FCF' stroke-width='4'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="hero mini" id="top">
+  <div class="wrap">
+    <div class="mini-bar">
+      <a class="mini-home" href="index.html"><span class="eyebrow">Mathematik 10 · E-Kurs</span><b>Lernpfad quadratische Funktionen</b></a>
+      <a class="btn mini-btn" href="index.html">⌂ Übersicht</a>
+    </div>
+    <details class="navbox"><summary>Alle Bereiche und Bausteine</summary>
+    <nav class="pnav" aria-label="Bereiche">
+      <a class="nbtn sk" href="startklar.html" data-view="startklar">▶ Startklar für Funktionen</a>
+      <div class="nrow bs" aria-label="Bausteine">
+        <a class="nbtn wk" href="b1.html" data-view="w1"><b>B1</b> Lineare Funktionen</a>
+        <a class="nbtn wk" href="b2.html" data-view="w2"><b>B2</b> Normalparabel</a>
+        <a class="nbtn wk" href="b3.html" data-view="w3"><b>B3</b> Streckfaktor a</a>
+        <a class="nbtn wk" href="b4.html" data-view="w4"><b>B4</b> Scheitelpunktform</a>
+        <a class="nbtn wk" href="b5.html" data-view="w5"><b>B5</b> Normalform</a>
+        <a class="nbtn wk" href="ka.html" data-view="ka"><b>KA</b> Klassenarbeit B1–B5</a>
+        <a class="nbtn wk" href="b6.html" data-view="w6"><b>B6</b> Nullstellen</a>
+        <a class="nbtn wk" href="b7.html" data-view="w7"><b>B7</b> Sachaufgaben</a>
+      </div>
+      <a class="nbtn wk zap" href="b8.html" data-view="w8"><b>B8</b> ZAP Prüfungsfit – original Prüfungsaufgaben üben</a>
+      <div class="nrow bs gr" aria-label="Werkzeuge">
+        <a class="nbtn gr" href="#labor" data-view="labor" aria-current="page">⊕ Parabel-Labor</a>
+        <a class="nbtn gr" href="trainer.html" data-view="trainer">↻ Trainer</a>
+        <a class="nbtn gr" href="ich-kann.html" data-view="check">✓ Ich-kann-Liste</a>
+        <a class="nbtn gr" href="glossar.html" data-view="glossar">Aa Glossar</a>
+      </div>
+      <a class="nbtn gr wide" href="fuev.html" data-view="fuev">✎ Lösungen zu den FÜV – Musterlösungen zu Baustein 1–7</a>
+      <a class="nbtn gr wide" href="basis.html" data-view="basis">▦ Basis-Blöcke – Erklärungen, Lösungen zu den Blättern und Schritt-Trainer</a>
+    </nav>
+    </details>
+  </div>
+</header>
+<div class="wrap layout">
+  <main>
+  <section class="unit" id="labor">
+    <div class="unit-head"><span class="tag">Ausprobieren</span><h2>Parabel-Labor</h2></div>
+    <p class="goal">Verändere a, d und e und beobachte, was mit dem Graphen, der Gleichung und der Tabelle passiert.</p>
+    <div class="lab">
+      <canvas id="labCanvas" width="640" height="520" aria-label="Graph der eingestellten Parabel"></canvas>
+      <div class="block">
+        <div class="sliders">
+          <div class="sl"><label for="sa">a (Streckfaktor) <output id="oa">1</output></label><input id="sa" type="range" min="-3" max="3" step="0.1" value="1"></div>
+          <div class="sl"><label for="sd">d (links/rechts) <output id="od">2</output></label><input id="sd" type="range" min="-5" max="5" step="0.1" value="2"></div>
+          <div class="sl"><label for="se">e (oben/unten) <output id="oe">−3</output></label><input id="se" type="range" min="-5" max="5" step="0.1" value="-3"></div>
+        </div>
+        <div class="readout" style="margin-top:14px" aria-live="polite">
+          <div><b>Scheitelpunktform</b><span id="rSpf"></span></div>
+          <div><b>Normalform</b><span id="rNf"></span></div>
+          <div><b>Scheitelpunkt</b><span id="rS"></span></div>
+          <div><b>Form</b><span id="rForm" style="font-family:var(--f-body)"></span></div>
+          <div><b>Nullstellen</b><span id="rN"></span></div>
+        </div>
+        <div class="tbl" style="margin-top:12px"><table id="rTab"></table></div>
+      </div>
+    </div>
+  </section>
+  </main>
+</div>
+<footer><div class="wrap">Lernpfad quadratische Funktionen · Mathematik 10 E-Kurs · passend zu den Bausteinen 1–8 der Unterrichtseinheit · <a href="links.html">↗ Weitere Seiten zum Üben</a></div></footer>
+<script src="assets/app.js"></script>
+<script src="assets/schritt-trainer.js"></script>
+<script src="assets/explorer.js"></script>
+</body>
+</html>
