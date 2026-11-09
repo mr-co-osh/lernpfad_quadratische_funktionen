@@ -158,7 +158,7 @@
   const items = [
     ['eine lineare Funktion als Tabelle, Graph und Gleichung darstellen und m und b am Graphen ablesen und im Sachkontext deuten.','2023 T1, 2025 e'],
     ['Schnittpunkte zweier Geraden und Nullstellen linearer Funktionen berechnen.','Teil 1'],
-    ['an einer Tabelle erkennen, ob ein Zusammenhang linear oder quadratisch ist.','2015 a · Grundlage'],
+    ['an einer Tabelle erkennen, ob ein Zusammenhang linear oder quadratisch ist, und die Verschiebung y = x² + e beschreiben.','2015 a · Grundlage'],
     ['Wertetabellen zu quadratischen Funktionen anlegen und den Graphen zeichnen.','2015 a'],
     ['den Einfluss von a beschreiben (Öffnung, gestreckt, gestaucht).','2022 T1'],
     ['den Scheitelpunkt aus der Scheitelpunktform ablesen.','2025 a'],
