@@ -349,6 +349,10 @@ nav.toc a.sk-nav{background:var(--green-soft);font-weight:700}
 .ww-k.x{background:var(--blue-soft);color:var(--blue)}
 /* WW-CSS-END */
 
+/* MOBIL-FIX-EQG: breite Rechenwege scrollen statt die Seite zu verbreitern */
+main>*,.grid2>*,.practice>*,.lvlcol,.task,.steps>li,.block{min-width:0}
+.eqg,.formula{max-width:100%;overflow-x:auto}
+
 /* ---- Website (mehrere Seiten) ---- */
 .hero.mini{padding-block:14px 10px}
 .hero.mini .wrap{display:grid;gap:10px;grid-template-columns:minmax(0,1fr)}
